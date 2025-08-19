@@ -279,7 +279,7 @@ footer p {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 .back-link:hover {
-    background: #93c5fd; 
+    background: #93c5fd;
     color: #1e3a8a;
     transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);

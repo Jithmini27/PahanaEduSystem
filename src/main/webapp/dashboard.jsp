@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 <%--
   Created by IntelliJ IDEA.
   User: jithm
@@ -15,7 +15,7 @@
 
 </body>
 </html>
-=======
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% if (session.getAttribute("loggedIn") == null || !(Boolean) session.getAttribute("loggedIn")) {
     response.sendRedirect("login.jsp");
@@ -88,4 +88,4 @@
 </footer>
 </body>
 </html>
->>>>>>> Stashed changes
+
