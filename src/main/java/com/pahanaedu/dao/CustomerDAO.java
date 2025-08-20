@@ -8,16 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
-
     public void addCustomer(Customer customer) {
-        String sql = "INSERT INTO customers (account_number, name, address, telephone, units_consumed) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO customers (account_number, name, address, telephone) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, customer.getAccountNumber());
             ps.setString(2, customer.getName());
             ps.setString(3, customer.getAddress());
             ps.setString(4, customer.getTelephone());
-            ps.setInt(5, customer.getUnitsConsumed());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -25,16 +23,25 @@ public class CustomerDAO {
     }
 
     public void updateCustomer(Customer customer) {
-        String sql = "UPDATE customers SET name = ?, address = ?, telephone = ?, units_consumed = ? WHERE account_number = ?";
+        String sql = "UPDATE customers SET name = ?, address = ?, telephone = ? WHERE account_number = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getAddress());
             ps.setString(3, customer.getTelephone());
-            ps.setInt(4, customer.getUnitsConsumed());
-            ps.setInt(5, customer.getAccountNumber());
-            int rows = ps.executeUpdate();
-            System.out.println("Rows updated: " + rows);
+            ps.setInt(4, customer.getAccountNumber());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCustomer(int accountNumber) {
+        String sql = "DELETE FROM customers WHERE account_number = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, accountNumber);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,7 +59,6 @@ public class CustomerDAO {
                 c.setName(rs.getString("name"));
                 c.setAddress(rs.getString("address"));
                 c.setTelephone(rs.getString("telephone"));
-                c.setUnitsConsumed(rs.getInt("units_consumed"));
                 customers.add(c);
             }
         } catch (SQLException e) {
@@ -74,23 +80,10 @@ public class CustomerDAO {
                 c.setName(rs.getString("name"));
                 c.setAddress(rs.getString("address"));
                 c.setTelephone(rs.getString("telephone"));
-                c.setUnitsConsumed(rs.getInt("units_consumed"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return c;
-    }
-
-    // NEW: Delete customer by account number
-    public void deleteCustomer(int accountNumber) {
-        String sql = "DELETE FROM customers WHERE account_number = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, accountNumber);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
