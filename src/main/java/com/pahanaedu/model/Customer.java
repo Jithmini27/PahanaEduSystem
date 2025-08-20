@@ -5,16 +5,14 @@ public class Customer {
     private String name;
     private String address;
     private String telephone;
-    private int unitsConsumed;
 
     // Constructors
     public Customer() {}
-    public Customer(int accountNumber, String name, String address, String telephone, int unitsConsumed) {
+    public Customer(int accountNumber, String name, String address, String telephone) {
         this.accountNumber = accountNumber;
         this.name = name;
         this.address = address;
         this.telephone = telephone;
-        this.unitsConsumed = unitsConsumed;
     }
 
     // Getters and Setters
@@ -26,6 +24,4 @@ public class Customer {
     public void setAddress(String address) { this.address = address; }
     public String getTelephone() { return telephone; }
     public void setTelephone(String telephone) { this.telephone = telephone; }
-    public int getUnitsConsumed() { return unitsConsumed; }
-    public void setUnitsConsumed(int unitsConsumed) { this.unitsConsumed = unitsConsumed; }
 }
