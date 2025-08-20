@@ -19,7 +19,6 @@ public class AddCustomerServlet extends HttpServlet {
             customer.setName(request.getParameter("name"));
             customer.setAddress(request.getParameter("address"));
             customer.setTelephone(request.getParameter("telephone"));
-            customer.setUnitsConsumed(Integer.parseInt(request.getParameter("unitsConsumed")));
 
             CustomerDAO dao = new CustomerDAO();
             dao.addCustomer(customer);
