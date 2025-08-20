@@ -13,18 +13,26 @@ import java.io.IOException;
 @WebServlet("/editItem")
 public class EditItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idStr = request.getParameter("id");
+        if (idStr == null || idStr.trim().isEmpty()) {
+            request.setAttribute("error", "Item ID is required");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
+            int id = Integer.parseInt(idStr);
             ItemDAO dao = new ItemDAO();
             Item item = dao.getItemById(id);
             if (item != null) {
                 request.setAttribute("item", item);
                 request.getRequestDispatcher("editItem.jsp").forward(request, response);
             } else {
-                response.sendRedirect("error.jsp");
+                request.setAttribute("error", "Item not found");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect("error.jsp");
+            request.setAttribute("error", "Invalid item ID format");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
@@ -41,6 +49,9 @@ public class EditItemServlet extends HttpServlet {
             response.sendRedirect("itemList");
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid input format");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error", "Error updating item: " + e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
