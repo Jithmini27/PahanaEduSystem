@@ -1,60 +1,125 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%
-    Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");
-    if (loggedIn == null || !loggedIn) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<% if (session.getAttribute("loggedIn") == null || !(Boolean) session.getAttribute("loggedIn")) {
+    response.sendRedirect("login.jsp");
+} %>
 <html>
 <head>
     <title>Customer List - Pahana Edu</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Enhance table container with a modern card effect */
+        .customer-table {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 1.5rem auto;
+        }
+        /* Action buttons styling */
+        .actions a {
+            margin-right: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            background: linear-gradient(to right, #1e3a8a, #1e40af);
+            color: #e0f2fe; /* Light blue text */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .actions a:hover {
+            background: #93c5fd;
+            color: #1e3a8a;
+            transform: translateY(-1px);
+        }
+        .actions a.delete {
+            background: linear-gradient(to right, #ef4444, #dc2626);
+        }
+        .actions a.delete:hover {
+            background: #f87171;
+            color: #fff;
+        }
+        /* Enhanced title styling */
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            background: linear-gradient(to right, #1e3a8a, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 2rem 0 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #1e3a8a, #60a5fa);
+            border-radius: 2px;
+        }
+        /* Fade-in animation for title */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
-<h2>Customer Accounts</h2>
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="img/logo.png" alt="Pahana Edu" onerror="this.replaceWith('Pahana Edu')">
 
+        </div>
+        <nav>
+            <a href="dashboard.jsp">Home</a>
+            <a href="login.jsp">Logout</a>
+        </nav>
+    </div>
+</header>
+<div class="container">
+    <h2>Customer Accounts</h2>
+    <div class="customer-table">
+        <table>
+            <thead>
+            <tr>
+                <th>Account</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Telephone</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="customer" items="${customers}">
+                <tr>
+                    <td>${customer.accountNumber}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.address}</td>
+                    <td>${customer.telephone}</td>
+                    <td class="actions">
+                        <a href="editCustomer?accountNumber=${customer.accountNumber}">Edit</a>
+                        <a href="bill?accountNumber=${customer.accountNumber}">Generate Bill</a>
+                        <a href="deleteCustomer?accountNumber=${customer.accountNumber}" class="delete" onclick="return confirm('Are you sure you want to delete this customer?')">Delete</a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
 
-
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Account</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Telephone</th>
-        <th>Units</th>
-        <th>Actions</th>
-    </tr>
-    <c:forEach var="customer" items="${customers}">
-        <tr>
-            <td>${customer.accountNumber}</td>
-            <td>${customer.name}</td>
-            <td>${customer.address}</td>
-            <td>${customer.telephone}</td>
-            <td>${customer.unitsConsumed}</td>
-            <td>
-                <!-- Edit Button -->
-                <form action="editCustomer" method="get" style="display:inline;">
-                    <input type="hidden" name="accountNumber" value="${customer.accountNumber}">
-                    <input type="submit" value="Edit">
-                </form>
-
-                <!-- Delete Button -->
-                <form action="deleteCustomer" method="post" style="display:inline;">
-                    <input type="hidden" name="accountNumber" value="${customer.accountNumber}">
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-                </form>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
-
-<!-- Add Customer Button -->
-<form action="addCustomer.jsp" method="get" style="margin-bottom: 15px;">
-    <input type="submit" value="Add New Customer">
-</form>
-
-<a href="dashboard.jsp" class="btn">Back to Dashboard</a>
+</div>
 </body>
 </html>
