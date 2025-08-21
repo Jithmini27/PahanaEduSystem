@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+=======
+
+>>>>>>> 25e17f8fc7db9e1bb850f1530a5f23b34bf95c14
 <%--
   Created by IntelliJ IDEA.
   User: jithm
@@ -16,9 +20,13 @@
 
 </body>
 </html>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> 25e17f8fc7db9e1bb850f1530a5f23b34bf95c14
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% if (session.getAttribute("loggedIn") == null || !(Boolean) session.getAttribute("loggedIn")) {
     response.sendRedirect("login.jsp");
@@ -288,4 +296,4 @@
 >>>>>>> Stashed changes
 =======
 </html>
->>>>>>> Stashed changes
+
